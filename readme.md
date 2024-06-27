@@ -45,14 +45,14 @@ npm run bridge native-bridge claimWithdraw -- --withdrawL2Hash[--l2hash]
 ## Utils CLI
 ### Native
 ```bash
-npm run utils native getBalance -- --addr[default]
+npm run utils native getBalance -- --addr[default] --layer [l1 | l2 | l3][default]
 ```
 > If `--addr` is omitted, default wallet address in *.env.SIGNER_PK_KEY*<br/>
 > If `--layer` is omitted, default "l1"
 
 ### ERC20
 ```bash
-npm run utils erc20 getBalance -- -- --addr[default] --layer [l1 | l2 | l3][default]
+npm run utils erc20 getBalance -- --addr[default] --layer [l1 | l2 | l3][default]
 npm run utils erc20 approve -- --spender --amount[--a] --layer [l1 | l2 | l3][default]
 ```
 > If `--addr` is omitted, default wallet address in *.env.SIGNER_PK_KEY*<br/>

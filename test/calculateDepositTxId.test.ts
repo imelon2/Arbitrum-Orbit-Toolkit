@@ -12,10 +12,10 @@ const formatNumber = (numberVal: BigNumber): Uint8Array => {
 async function main() {
   // ORIGIN EthDepositMessage.calculateDepositTxId
   
-  const l2ChainId: number = 421614;
-  const messageNumber: BigNumber = BigNumber.from(759118);
-  const fromAddress: string = "0xE755352a429f3ff3D21128820DCbc53E063696c2"; // L2_msag.sender
-  const toAddress: string = "0xd644352A429F3fF3d21128820DcBC53e063685b1"; // L1_msg.sender
+  const l2ChainId: number = 412346;
+  const messageNumber: BigNumber = BigNumber.from(14);
+  const fromAddress: string = "0xff851C151D5BCf4D6C6627F48FA642fd5Fa14400"; // L2_msag.sender
+  const toAddress: string = "0xEE741c151d5bcf4D6C6627f48FA642Fd5fa132EF"; // L1_msg.sender
   const value: BigNumber = parseEther("0.01");
 
   const chainId = BigNumber.from(l2ChainId);
@@ -34,7 +34,6 @@ async function main() {
   ]);
 
   console.log("L2 Transaction Hash : " + ethers.utils.keccak256(rlpEnc));
-  
 }
 
 (async () => {
