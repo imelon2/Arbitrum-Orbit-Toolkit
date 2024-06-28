@@ -10,9 +10,10 @@ export class RollupUserLogic_factory extends BaseContract {
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,
     address?: string,
-    contractName: string = "RollupUserLogic"
+    contractName: string = "RollupUserLogic",
+    _abi:any = abi // If need integrated ABI
   ) {
-    super(provider, signer, abi, bytecode, contractName, address);
+    super(provider, signer, _abi, bytecode, contractName, address);
   }
 
   /**

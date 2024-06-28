@@ -4,6 +4,7 @@ import {
   abi,
   bytecode,
 } from "@arbitrum/nitro-contracts/build/contracts/src/bridge/Inbox.sol/Inbox.json";
+import { LogFinishTime } from "../_decorators/common";
 
 
 export class Inbox_factory extends BaseContract {
@@ -11,12 +12,13 @@ export class Inbox_factory extends BaseContract {
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,
     address?: string,
-    contractName: string = "Inbox"
+    contractName: string = "Inbox",
+    _abi:any = abi // If need integrated ABI
   ) {
-    super(provider, signer, abi, bytecode, contractName, address);
+    super(provider, signer, _abi, bytecode, contractName, address);
   }
 
-
+  @LogFinishTime
   async depositEth(amount: BigNumber, overrides?: Overrides) {
     try {
       if (!this.contract) {
@@ -31,7 +33,7 @@ export class Inbox_factory extends BaseContract {
       }) as ethers.providers.TransactionResponse;
 
       console.log(
-        `${this.contractName}.${this.depositEth.name} transaction by hash ${response.hash}`
+        `${this.contractName}.depositEth transaction by hash ${response.hash}`
       );
       return await response.wait();
     } catch (error) {

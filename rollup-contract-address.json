@@ -4,6 +4,7 @@
         "inbox": "0xaAe29B0366299461418F5324a79Afc425BE5ae21",
         "outbox":"0x65f07C7D521164a4d5DaC6eB8Fac8DA067A3B78F",
         "rollup":"0xd80810638dbDF9081b72C1B33c65375e807281C8",
+        "sequencerInbox":"",
         "feeToken":""
     },
     "__comment_SepoliaArb_":"########### SepoliaArb ###########",
@@ -14,6 +15,7 @@
         "inbox": "0xEa6C29a19fCDB7518E5fD0A572669f114d0dDd3b",
         "outbox":"0x32425faB271badEdcEE975177310D3ca7133bCe9",
         "rollup":"0x758e1C29CF3edb83e70c53F96659966aB73C363d",
+        "sequencerInbox":"0xc53BDd1F6370790F9574BaB58f8df5C160672A85",
         "feeToken":"0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E"
     },
     "__comment_Dev2":"########### Dev Layer2 ###########",

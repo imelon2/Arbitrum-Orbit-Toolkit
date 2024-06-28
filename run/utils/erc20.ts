@@ -21,14 +21,10 @@ export const ERC20Command = (yargs: Argv) => {
       },
       handler: async (argv: any) => {
         const { provider, wallet } = initProvider(
-            argv[argv.layer+"url"],
+          argv[argv.layer + "url"],
           process.env.SIGNER_PK_KEY!
         );
         let address = argv.address === "0x" ? wallet.address : argv.address;
-
-        /** Verify address & will return Error */
-        address = getAddress(address);
-
         await getBalance(address, provider, wallet);
       },
     })
@@ -39,7 +35,7 @@ export const ERC20Command = (yargs: Argv) => {
         spender: {
           string: true,
           describe: "",
-          require:true
+          require: true,
         },
         amount: {
           alias: ["a"],
@@ -50,13 +46,36 @@ export const ERC20Command = (yargs: Argv) => {
       },
       handler: async (argv: any) => {
         const { provider, wallet } = initProvider(
-            argv[argv.layer+"url"],
+          argv[argv.layer + "url"],
           process.env.SIGNER_PK_KEY!
         );
-        /** Verify address & will return Error */
-        let spender = getAddress(argv.spender);
 
-        await approve(spender, argv.amount,provider, wallet);
+        await approve(argv.spender, argv.amount, provider, wallet);
+      },
+    })
+    .command({
+      command: "transfer",
+      describe: "",
+      builder: {
+        to: {
+          string: true,
+          describe: "",
+          require: true,
+        },
+        amount: {
+          alias: ["a"],
+          string: true,
+          describe: "",
+          default: "0",
+        },
+      },
+      handler: async (argv: any) => {
+        const { provider, wallet } = initProvider(
+          argv[argv.layer + "url"],
+          process.env.SIGNER_PK_KEY!
+        );
+
+        await transfer(argv.to, argv.amount, provider, wallet);
       },
     });
 };
@@ -67,10 +86,14 @@ const getBalance = async (
   signer: Wallet
 ) => {
   try {
+    /** Verify address & will return Error */
+    address = getAddress(address);
+
     const { feeToken } = await readRollupCA(provider);
     const ERC20 = new Eth20_factory(provider, signer, "FeeToken", feeToken);
     const balance = await ERC20.balanceOf(address);
-    console.log(ethers.utils.formatEther(balance!));
+    const symbol = await ERC20.symbol();
+    console.log(`${ethers.utils.formatEther(balance!)} ${symbol}`);
   } catch (error) {
     console.error(error);
   }
@@ -83,10 +106,33 @@ const approve = async (
   signer: Wallet
 ) => {
   try {
+    /** Verify address & will return Error */
+    spender = getAddress(spender);
+
     const approveAmountToL2 = parseEther(amount);
     const { feeToken } = await readRollupCA(provider);
     const ERC20 = new Eth20_factory(provider, signer, "FeeToken", feeToken);
     const receipt = await ERC20.approve(spender, approveAmountToL2);
+    console.log(receipt);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const transfer = async (
+  to: string,
+  amount: string,
+  provider: JsonRpcProvider,
+  signer: Wallet
+) => {
+  try {
+    /** Verify address & will return Error */
+    to = getAddress(to);
+
+    const transferAmountToL2 = parseEther(amount);
+    const { feeToken } = await readRollupCA(provider);
+    const ERC20 = new Eth20_factory(provider, signer, "FeeToken", feeToken);
+    const receipt = await ERC20.transfer(to, transferAmountToL2);
     console.log(receipt);
   } catch (error) {
     console.error(error);

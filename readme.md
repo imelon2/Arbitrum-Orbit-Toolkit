@@ -54,6 +54,7 @@ npm run utils native getBalance -- --addr[default] --layer [l1 | l2 | l3][defaul
 ```bash
 npm run utils erc20 getBalance -- --addr[default] --layer [l1 | l2 | l3][default]
 npm run utils erc20 approve -- --spender --amount[--a] --layer [l1 | l2 | l3][default]
+npm run utils erc20 transfer  -- --to --amount[--a] --layer l1 [l1 | l2 | l3][default]
 ```
 > If `--addr` is omitted, default wallet address in *.env.SIGNER_PK_KEY*<br/>
 > If `--layer` is omitted, default "l1"
@@ -65,6 +66,13 @@ npm run debug parseLogEvent -- --txHash --layer [l1 | l2 | l3]
 npm run debug parseRevert -- --txHash --layer [l1 | l2 | l3]
 ```
 > If `--layer` is omitted, default "l1"
+
+## Monitoring CLI
+```bash
+npm run monitor contracts --  --name [contract-name] --layer [l1 | l2 | l3]
+```
+> **contract-name**은 `./rollup-contract-address.json`에 정의된 기준으로 적용됩니다.</br>
+> [current release] : `inbox`, `outbox`, `rollup`,`sequencerInbox`,`feeToken`
 
 
 # Options

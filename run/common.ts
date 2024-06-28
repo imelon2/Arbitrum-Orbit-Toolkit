@@ -5,3 +5,9 @@ export const initProvider = (url: string, pk: string) => {
     const wallet = new Wallet(pk, provider);
     return { provider, wallet };
   };
+
+export const initWsProvider = (url: string, pk: string) => {
+    const provider = new ethers.providers.WebSocketProvider(url);
+    const wallet = new Wallet(pk, provider);
+    return { provider, wallet };
+  };

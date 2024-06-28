@@ -7,6 +7,7 @@
     "arbos": "ts-node run/arbos/index.ts",
     "utils": "ts-node run/utils/index.ts",
     "debug": "ts-node run/debug/index.ts",
+    "monitor": "ts-node run/monitor/index.ts",
     "bridge": "ts-node run/bridge/index.ts",
     "rollup": "ts-node run/rollup/index.ts"
   },

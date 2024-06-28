@@ -6,6 +6,7 @@ import {
   bytecode,
 } from "@arbitrum/nitro-contracts/build/contracts/src/precompiles/ArbSys.sol/ArbSys.json";
 import { ARBOS_SYS_ADDRESS } from "../../config";
+import { LogFinishTime } from "../_decorators/common";
 
 export class ArbSys_factory extends BaseContract {
   constructor(
@@ -23,6 +24,7 @@ export class ArbSys_factory extends BaseContract {
     );
   }
 
+  @LogFinishTime
   async withdrawEth(
     destination: address,
     amount: BigNumber,
@@ -40,7 +42,7 @@ export class ArbSys_factory extends BaseContract {
       })) as ethers.providers.TransactionResponse;
 
       console.log(
-        `${this.contractName}.${this.withdrawEth.name} transaction by hash ${response.hash}`
+        `${this.contractName}.withdrawEth transaction by hash ${response.hash}`
       );
       return await response.wait();
     } catch (error) {

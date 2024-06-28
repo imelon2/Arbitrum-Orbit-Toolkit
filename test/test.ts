@@ -1,3 +1,5 @@
+import { LogFinishTime } from "../src/factorys/_decorators/common";
+
 class ContractHandler {
     contract: any = null;
     contractName: string = "ExampleContract1234"; // 이 속성이 클래스에 존재하는지 확인
@@ -6,7 +8,7 @@ class ContractHandler {
         this.contract = contract;
     }
 
-    @checkContract
+    @LogFinishTime
     init() {
         console.log("Initializing contract...");
     }

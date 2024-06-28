@@ -9,7 +9,7 @@ import { logNullReceiptCalldataMsg } from "../src/utils/log"
 async function main() {
     try {
         const {provider} = init("L1")
-        const txHash = "0x614dcf759bb60d57b76ef4b765c6c5695d4213c5b6697755f02671cb628104a4"
+        const txHash = "0xb150f320033dc52287774ed09bbb9e6db629771ef71969e43a0bc38fa84b599f"
         const receipt = await provider.getTransaction(txHash)
         const calldata = receipt.data
         if(calldata == "") {
@@ -24,5 +24,5 @@ async function main() {
         throw error
     }
 }
-
+// b150f3
 main()

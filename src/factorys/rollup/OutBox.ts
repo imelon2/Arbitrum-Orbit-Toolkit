@@ -11,17 +11,20 @@ import {
   bytecode,
 } from "@arbitrum/nitro-contracts/build/contracts/src/bridge/Outbox.sol/Outbox.json";
 import { IL2ToL1Tx } from "../../type/contractType";
+import { LogFinishTime } from "../_decorators/common";
 
 export class Outbox_factory extends BaseContract {
   constructor(
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,
     address?: string,
-    contractName: string = "Outbox"
+    contractName: string = "Outbox",
+    _abi:any = abi // If need integrated ABI
   ) {
-    super(provider, signer, abi, bytecode, contractName, address);
+    super(provider, signer, _abi, bytecode, contractName, address);
   }
 
+  @LogFinishTime
   async executeTransaction(
     proof: BytesLike[],
     L2ToL1Tx_Log:IL2ToL1Tx,
@@ -46,7 +49,7 @@ export class Outbox_factory extends BaseContract {
       )) as ethers.providers.TransactionResponse;
 
       console.log(
-        `${this.contractName}.${this.executeTransaction.name} transaction by hash ${response.hash}`
+        `${this.contractName}.executeTransaction transaction by hash ${response.hash}`
       );
       return await response.wait();
     } catch (error) {
