@@ -129,10 +129,10 @@ const transfer = async (
     /** Verify address & will return Error */
     to = getAddress(to);
 
-    const transferAmountToL2 = parseEther(amount);
+    const transferAmount = parseEther(amount);
     const { feeToken } = await readRollupCA(provider);
     const ERC20 = new Eth20_factory(provider, signer, "FeeToken", feeToken);
-    const receipt = await ERC20.transfer(to, transferAmountToL2);
+    const receipt = await ERC20.transfer(to, transferAmount);
     console.log(receipt);
   } catch (error) {
     console.error(error);

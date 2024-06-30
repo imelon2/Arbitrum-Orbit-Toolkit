@@ -11,3 +11,5 @@ export const initWsProvider = (url: string, pk: string) => {
     const wallet = new Wallet(pk, provider);
     return { provider, wallet };
   };
+
+export const layer = {choices:["l1", "l2", "l3"],default:"l1"}

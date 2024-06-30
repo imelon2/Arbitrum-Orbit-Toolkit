@@ -3,13 +3,14 @@ import Yargs from "yargs/yargs";
 import dotenv from "dotenv";
 import { ERC20Command } from "./erc20";
 import { NativeCommand } from "./native";
+import { layer } from "../common";
 
 dotenv.config();
 
 async function main() {
   await Yargs(hideBin(process.argv))
     .options({
-      layer:{choices:["l1", "l2", "l3"]},
+      layer,
       l1url: { default: process.env.L1_URL },
       l2url: { default: process.env.L2_URL },
       l3url: { default: process.env.L3_URL },
