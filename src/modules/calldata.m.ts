@@ -4,8 +4,8 @@ import { readJSONFilesInFolder } from "./abiReader";
 
 
 function processParam(input: ethers.utils.ParamType[], resultObject: any = {}) {
-    input.forEach((paramType) => {
-      resultObject[`${paramType.name}(${paramType.type})`] = Array.isArray(
+    input.forEach((paramType,i) => {
+      resultObject[`${paramType.name || `unCheck${i}`}(${paramType.type})`] = Array.isArray(
         paramType.components
       )
         ? processParam(paramType.components)
@@ -20,8 +20,11 @@ function processParam(input: ethers.utils.ParamType[], resultObject: any = {}) {
   }
   
   function processArgs(object: any, decodeCalldata: ethers.utils.Result) {
-    Object.keys(object).forEach((val) => {
-      const arg = decodeCalldata[replaceFrag(val)];
+    Object.keys(object).forEach((val,i) => {
+
+      // @Fixed match with Result`s index
+      // const arg = decodeCalldata[replaceFrag(val)];
+      const arg = decodeCalldata[i];
   
       object[val] =
         object[val] !== null
@@ -37,17 +40,15 @@ function processParam(input: ethers.utils.ParamType[], resultObject: any = {}) {
   export const decodeCalldata = async (calldata: string,root:any[]) => {
     try {
       const abi = readJSONFilesInFolder(root);
-  
+
       const i = new ethers.utils.Interface(abi);
-  
       const selector = calldata.substring(0, 10);
   
       // CHECK INVALID SELECOTR
       const frag = i.getFunction(selector);
       const title = processParam(frag.inputs);
-  
       const decodeCalldata = i.decodeFunctionData(selector, calldata);
-  
+      
       const params = processArgs(title, decodeCalldata);
       const result = {
         function: frag.name,
