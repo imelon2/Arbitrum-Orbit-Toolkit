@@ -197,6 +197,7 @@ const deposit = async (
     to
   );
 
+  // @feat/retryable-estimator - calculate maxSubmissionFee
   const Inbox = new InboxBase(providerL1, signerL1, inbox);
   const l1basefee = await providerL1.getGasPrice();
   let maxSubmissionFee = await Inbox.calculateRetryableSubmissionFee(
@@ -210,6 +211,7 @@ const deposit = async (
     DEFAULT_SUBMISSION_FEE_PERCENT_INCREASE
   );
 
+  // @feat/retryable-estimator - calculate max_fee_per_gas
   /* max_fee_per_gas * (max_fee_per_gas + 500%) */
   let max_fee_per_gas = await providerL2.getGasPrice();
   max_fee_per_gas = percentIncrease(
@@ -217,8 +219,11 @@ const deposit = async (
     DEFAULT_GAS_PRICE_PERCENT_INCREASE
   );
 
+  // @feat/retryable-estimator - calculate gasLimit
   const NodeInterface = new NodeInterface_factory(providerL2, signerL2);
   const gasLimit = await NodeInterface.estimateRetryableTicket(retryTicket!);
+
+  // @feat/retryable-estimator - calculate value
   const value = gasLimit?.mul(max_fee_per_gas).add(maxSubmissionFee);
 
   const data = getOutboundTransferData(maxSubmissionFee);
