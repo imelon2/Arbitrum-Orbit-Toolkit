@@ -1,23 +1,28 @@
 import { Argv, alias } from "yargs";
 import { initProvider } from "../common";
-import { readRollupCA } from "../../src/config";
+import {
+  ABI_BRIDGE_ABI_ROOT,
+  ABI_NITRO_ABI_ROOT,
+  readRollupCA,
+} from "../../src/config";
 import { Wallet } from "ethers";
 import { ArbBlock, JsonRpcProvider } from "../../src/type";
 import { BytesLike, getAddress, isAddress, parseEther } from "ethers/lib/utils";
 import { ERC20Inbox_factory } from "../../src/factorys";
-import { Inbox_factory } from "../../src/factorys/rollup/Inbox";
-import { ArbSys_factory } from "../../src/factorys/arbos/AybSys";
-import { RollupUserLogic_factory } from "../../src/factorys/rollup/RollupUserLogic";
+import { Inbox_factory } from "../../src/factorys/rollup/Inbox.f";
+import { ArbSys_factory } from "../../src/factorys/arbos/AybSys.f";
+import { RollupUserLogic_factory } from "../../src/factorys/rollup/RollupUserLogic.f";
 import { arb_getBlockByHash } from "../../src/rpc/rpc";
-import { NodeInterface_factory } from "../../src/factorys/arbos/NodeInterface";
-import { Outbox_factory } from "../../src/factorys/rollup/OutBox";
+import { NodeInterface_factory } from "../../src/factorys/arbos/NodeInterface.f";
+import { Outbox_factory } from "../../src/factorys/rollup/OutBox.f";
 import { IL2ToL1Tx } from "../../src/type/contractType";
+import { decodeLogsEvent } from "../../src/modules/logEventParser.m";
 
 export const NativeBridgeCommand = (yargs: Argv) => {
   return yargs
     .command({
-      command: "depositERC20",
-      aliases: ["d-erc20"],
+      command: "depositOrbit",
+      aliases: ["d-orbit"],
       describe: "",
       builder: {
         amount: {
@@ -32,9 +37,7 @@ export const NativeBridgeCommand = (yargs: Argv) => {
           argv.l1url,
           process.env.SIGNER_PK_KEY!
         );
-        /**
-         * call on L1 network
-         */
+
         await depositERC20(argv.amount, provider, wallet);
       },
     })
@@ -55,9 +58,7 @@ export const NativeBridgeCommand = (yargs: Argv) => {
           argv.l1url,
           process.env.SIGNER_PK_KEY!
         );
-        /**
-         * call on L1 network
-         */
+        
         await depositEth(argv.amount, provider, wallet);
       },
     })
@@ -108,7 +109,7 @@ export const NativeBridgeCommand = (yargs: Argv) => {
           process.env.SIGNER_PK_KEY!
         );
 
-        const {proof} = await getProof(
+        const { proof } = await getProof(
           argv.withdrawL2Hash,
           providerL1,
           providerL2,
@@ -138,7 +139,7 @@ export const NativeBridgeCommand = (yargs: Argv) => {
           process.env.SIGNER_PK_KEY!
         );
 
-        const {proof,L2ToL1Tx_Log} = await getProof(
+        const { proof, L2ToL1Tx_Log } = await getProof(
           argv.withdrawL2Hash,
           providerL1,
           providerL2,
@@ -146,7 +147,12 @@ export const NativeBridgeCommand = (yargs: Argv) => {
           signerL2
         );
 
-        const result = await claimWithdraw(proof.proof,L2ToL1Tx_Log,providerL1,signerL1)
+        const result = await claimWithdraw(
+          proof.proof,
+          L2ToL1Tx_Log,
+          providerL1,
+          signerL1
+        );
         console.log(result);
       },
     });
@@ -248,26 +254,30 @@ const getProof = async (
 
   // (5) get L2ToL1Tx data
   const recepit = await providerL2.getTransactionReceipt(withdrawL2Hash);
-  const parseLogs = ArbSys.parseLogs(recepit.logs);
-  const _L2ToL1Tx_Log = parseLogs.filter((log) => log.name === "L2ToL1Tx");
+  const parseLogs = decodeLogsEvent(recepit.logs, [
+    ABI_NITRO_ABI_ROOT,
+    ABI_BRIDGE_ABI_ROOT,
+  ]);
 
-  const L2ToL1Tx_Log:IL2ToL1Tx = {
-    index : _L2ToL1Tx_Log[0].args.position, // position == index
-    l2Sender : _L2ToL1Tx_Log[0].args.caller,
-    to : _L2ToL1Tx_Log[0].args.destination,
-    l2Block : _L2ToL1Tx_Log[0].args.arbBlockNum,
-    l1Block : _L2ToL1Tx_Log[0].args.ethBlockNum,
-    l2Timestamp : _L2ToL1Tx_Log[0].args.timestamp,
-    value : _L2ToL1Tx_Log[0].args.callvalue,
-    data : _L2ToL1Tx_Log[0].args.data,
-  }
+  const _L2ToL1Tx_Log = parseLogs!.filter((log) => log.name === "L2ToL1Tx");
+
+  const L2ToL1Tx_Log: IL2ToL1Tx = {
+    index: _L2ToL1Tx_Log[0].args.position, // position == index
+    l2Sender: _L2ToL1Tx_Log[0].args.caller,
+    to: _L2ToL1Tx_Log[0].args.destination,
+    l2Block: _L2ToL1Tx_Log[0].args.arbBlockNum,
+    l1Block: _L2ToL1Tx_Log[0].args.ethBlockNum,
+    l2Timestamp: _L2ToL1Tx_Log[0].args.timestamp,
+    value: _L2ToL1Tx_Log[0].args.callvalue,
+    data: _L2ToL1Tx_Log[0].args.data,
+  };
 
   // (6) get Proof
   const outboxProofParams = await NodeInterface.constructOutboxProof(
     l2Block.sendCount,
     L2ToL1Tx_Log.index
   );
-  if(!outboxProofParams) throw new Error("undefined outboxProofParams");
+  if (!outboxProofParams) throw new Error("undefined outboxProofParams");
 
   const proof = {
     send: outboxProofParams.send,
@@ -275,16 +285,18 @@ const getProof = async (
     proof: outboxProofParams.proof,
   };
 
-  return {proof,L2ToL1Tx_Log};
+  return { proof, L2ToL1Tx_Log };
 };
 
 const claimWithdraw = async (
-  proof:string[],
-  L2ToL1Tx_Log:IL2ToL1Tx,
+  proof: string[],
+  L2ToL1Tx_Log: IL2ToL1Tx,
   providerL1: JsonRpcProvider,
   signerL1: Wallet
 ) => {
   const { outbox } = await readRollupCA(providerL1);
   const Outbox = new Outbox_factory(providerL1, signerL1, outbox);
-  return await Outbox.executeTransaction(proof,L2ToL1Tx_Log,{gasLimit:5000000});
+  return await Outbox.executeTransaction(proof, L2ToL1Tx_Log, {
+    gasLimit: 5000000,
+  });
 };

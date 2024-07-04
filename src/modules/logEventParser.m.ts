@@ -6,25 +6,32 @@ export const decodeLogsEvent = (logs: ethers.providers.Log[],root:any[]) => {
     try {
         const abi = readJSONFilesInFolder(root,"event")
         let iface = new ethers.utils.Interface(abi);
-    
-        logs.forEach((log,i) => {
-            console.log(`${ansi.BrightMagenta}############################ ${i} index logs message ############################${ansi.reset}`);
-            const parse = iface.parseLog(log)
-            let params:any = {}
-            parse.eventFragment.inputs.forEach((param,i) => {
-                const arg = parse.args[i];
-                params[`${param.name}(${param.type})`] = BigNumber.isBigNumber(arg) ? BigNumber.from(arg).toString() : arg
-            })
-            const result = {
-                name:parse.name,
-                signature : parse.signature,
-                topic:parse.topic,
-                params
-            }
-            console.log(result);
-            console.log("\n\n");
-        });
+        return logs.map((log) => iface.parseLog(log));
     } catch (error) {
         console.error(error)
     }
+}
+
+export const decodeLogsEventConsole = (_logs: ethers.providers.Log[],root:any[]) => {
+    const logs = decodeLogsEvent(_logs,root)
+
+    if(!logs) {
+        return console.log("No Logs");
+    }
+    logs.forEach((log,i) => {
+        console.log(`${ansi.BrightMagenta}############################ ${i} index logs message ############################${ansi.reset}`);
+        let params:any = {}
+        log.eventFragment.inputs.forEach((param,i) => {
+            const arg = log.args[i];
+            params[`${param.name}(${param.type})`] = BigNumber.isBigNumber(arg) ? BigNumber.from(arg).toString() : arg
+        })
+        const result = {
+            name:log.name,
+            signature : log.signature,
+            topic:log.topic,
+            params
+        }
+        console.log(result);
+        console.log("\n\n");
+    });
 }

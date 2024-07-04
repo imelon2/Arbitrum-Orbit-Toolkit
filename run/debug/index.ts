@@ -5,7 +5,7 @@ import { initProvider } from "../common";
 import { logErrorMsg, logNullReceiptCalldataMsg, logNullTxMsg, logSuccessMsg } from "../../src/utils/log";
 import { ABI_NITRO_ABI_ROOT, ABI_BRIDGE_ABI_ROOT, ABI_ROOT } from "../../src/config";
 import { decodeCalldata } from "../../src/modules/calldata.m";
-import { decodeLogsEvent } from "../../src/modules/logEventParser.m";
+import { decodeLogsEvent, decodeLogsEventConsole } from "../../src/modules/logEventParser.m";
 import { decodeRevertData, getRevertData } from "../../src/modules/revertParser.m";
 
 dotenv.config();
@@ -13,7 +13,7 @@ dotenv.config();
 async function main() {
   await Yargs(hideBin(process.argv))
     .options({
-      layer:{choices:["l1", "l2", "l3"]},
+      layer:{choices:["l1", "l2", "l3"],default:"l1"},
       l1url: { default: process.env.L1_URL },
       l2url: { default: process.env.L2_URL },
       l3url: { default: process.env.L3_URL },
@@ -69,7 +69,7 @@ async function main() {
           return logNullTxMsg(argv.txHash)
         } 
         
-        decodeLogsEvent(receipt.logs,[ABI_NITRO_ABI_ROOT,ABI_BRIDGE_ABI_ROOT,ABI_ROOT])
+        decodeLogsEventConsole(receipt.logs,[ABI_NITRO_ABI_ROOT,ABI_BRIDGE_ABI_ROOT,ABI_ROOT])
       },
     })
     .command({

@@ -1,5 +1,5 @@
 import { BigNumber, Overrides, Wallet, ethers } from "ethers";
-import { BaseContract } from "../base";
+import { BaseContract } from "../base.f";
 import {
   abi,
   bytecode,

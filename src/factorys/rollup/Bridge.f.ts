@@ -1,5 +1,5 @@
 import { Wallet, ethers } from "ethers";
-import { BaseContract } from "../base";
+import { BaseContract } from "../base.f";
 import {abi,bytecode} from "@arbitrum/nitro-contracts/build/contracts/src/bridge/Bridge.sol/Bridge.json"
 
 export class Bridge_factory extends BaseContract {

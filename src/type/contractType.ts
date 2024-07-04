@@ -1,4 +1,4 @@
-import { BigNumberish, BytesLike } from "ethers";
+import { BigNumber, BigNumberish, BytesLike } from "ethers";
 
 export type IL2ToL1Tx = {
     index: BigNumberish;
@@ -10,3 +10,16 @@ export type IL2ToL1Tx = {
     value: BigNumberish;
     data: BytesLike;
   };
+
+  export type IRetryableTicket = {
+    from:string, // sender
+    to:string,
+    l2CallValue:BigNumber,
+    maxSubmissionCost:BigNumber,
+    excessFeeRefundAddress:string,
+    callValueRefundAddress:string,
+    gasLimit:BigNumber,
+    maxFeePerGas:BigNumber,
+    amount:BigNumber, // deposit
+    data:string
+  }

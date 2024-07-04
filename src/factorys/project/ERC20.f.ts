@@ -1,5 +1,5 @@
 import { BigNumber, Overrides, Wallet, ethers } from "ethers";
-import { BaseContract } from "../base";
+import { BaseContract } from "../base.f";
 import {
   abi,
   bytecode,
@@ -8,6 +8,10 @@ import { address } from "../../type";
 import { LogFinishTime } from "../_decorators/common";
 
 export class Eth20_factory extends BaseContract {
+
+  /** @copyright @ethersproject/contracts */
+  public static MAX_APPROVAL: BigNumber = (/*#__PURE__*/BigNumber.from("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"));
+  
   constructor(
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,

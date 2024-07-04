@@ -23,3 +23,10 @@ export interface ArbBlockProps {
   }
   
   export type ArbBlock = ArbBlockProps & Block
+
+  export type CallParam = {
+    to: string,
+    data: string,
+    value: BigNumber,
+    from: string
+  }

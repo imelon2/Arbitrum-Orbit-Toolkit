@@ -1,4 +1,4 @@
-import { init, ABI_NITRO_ABI_ROOT, ABI_BRIDGE_ABI_ROOT, ABI_ROOT } from "../src/config"
+import { init, ABI_NITRO_ABI_ROOT, ABI_BRIDGE_ABI_ROOT, ABI_ROOT, ABI_BRIDGE_ABI_ROOT_Test } from "../src/config"
 import { decodeCalldata } from "../src/modules/calldata.m"
 import { logNullReceiptCalldataMsg } from "../src/utils/log"
 
@@ -8,21 +8,21 @@ import { logNullReceiptCalldataMsg } from "../src/utils/log"
  */
 async function main() {
     try {
-        const {provider} = init("L1")
-        const txHash = "0xb150f320033dc52287774ed09bbb9e6db629771ef71969e43a0bc38fa84b599f"
-        const receipt = await provider.getTransaction(txHash)
-        const calldata = receipt.data
-        if(calldata == "") {
-            return logNullReceiptCalldataMsg()
-        }
-        // const calldata = "0x5eb405d540d997f91e75338348c62513c90387c74869334f6e5e389a4a9c5e33d05d34730000000000000000000000000000000000000000000000000000000000000000"
+        // const {provider} = init("L1")
+        // const txHash = "0x7a1a27267ba75ce46fb5ccf35249781854b9a4ec4339d2a241e240cc932b3762"
+        // const receipt = await provider.getTransaction(txHash)
+        // const calldata = receipt.data
+        // if(calldata == "") {
+        //     return logNullReceiptCalldataMsg()
+        // }
+        const calldata = "0x2e567b3600000000000000000000000052419051b1406766871d00561df6055b7fb11c04000000000000000000000000d644352a429f3ff3d21128820dcbc53e063685b1000000000000000000000000d644352a429f3ff3d21128820dcbc53e063685b1000000000000000000000000000000000000000000000001158e460913d0000000000000000000000000000000000000000000000000000000000000000000a00000000000000000000000000000000000000000000000000000000000000060000000000000000000000000000000000000000000000000000000000000025e00000000000000000000000000000000000000000000000000000000000000400000000000000000000000000000000000000000000000000000000000000000"
         const result = await decodeCalldata(calldata,[ABI_NITRO_ABI_ROOT,ABI_BRIDGE_ABI_ROOT,ABI_ROOT])
+        // const result = await decodeCalldata(calldata,[ABI_BRIDGE_ABI_ROOT_Test])
 
         console.log(result);
-        
     } catch (error) {
         throw error
     }
 }
-// b150f3
+
 main()

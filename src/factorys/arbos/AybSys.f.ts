@@ -1,6 +1,6 @@
 import { BigNumber, Overrides, Wallet, ethers } from "ethers";
 import { JsonRpcProvider, address } from "../../type";
-import { BaseContract } from "../base";
+import { BaseContract } from "../base.f";
 import {
   abi,
   bytecode,

@@ -2,7 +2,7 @@ import { Argv } from "yargs";
 import { initProvider } from "../common";
 import { Wallet } from "ethers";
 import { readRollupCA } from "../../src/config";
-import { RollupUserLogic_factory } from "../../src/factorys/rollup/RollupUserLogic";
+import { RollupUserLogic_factory } from "../../src/factorys/rollup/RollupUserLogic.f";
 import { JsonRpcProvider } from "../../src/type";
 
 export const ConfigCommand = (yargs: Argv) => {

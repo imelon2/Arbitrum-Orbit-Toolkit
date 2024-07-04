@@ -2,6 +2,7 @@ import { hideBin } from "yargs/helpers";
 import Yargs from "yargs/yargs";
 import dotenv from "dotenv";
 import { NativeBridgeCommand } from "./native-bridge";
+import { ERC20BridgeCommand } from "./erc20-bridge";
 
 dotenv.config();
 
@@ -15,6 +16,11 @@ async function main() {
       "native-bridge",
       "Deposit & Withdraw native coin",
       NativeBridgeCommand
+    )
+    .command(
+      "erc20-bridge",
+      "Deposit & Withdraw ERC20 coin",
+      ERC20BridgeCommand
     )
     .strict()
     .help()  // 사용자에게 도움말을 자동으로 제공

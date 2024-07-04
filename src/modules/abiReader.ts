@@ -27,6 +27,9 @@ export function readJSONFilesInFolder(
           const jsonData = JSON.parse(fileContent).abi;
           const functionIndexes = jsonData.filter(
             (obj: any) => obj.type === type
+
+            // is search object
+            // (obj: any) => obj.name === "outboundTransfer"
           );
   
           bundlingABI = bundlingABI.concat(functionIndexes);
@@ -38,6 +41,7 @@ export function readJSONFilesInFolder(
     });
   })
 
+  // return bundlingABI;
   // 중복 제거
   const uniqueNames = new Array();
   return bundlingABI.filter((obj) => {

@@ -1,11 +1,11 @@
 import { BigNumber } from "ethers";
 import { init, readRollupCA } from "../src/config";
-import { NodeInterface_factory } from "../src/factorys/arbos/NodeInterface";
-import { RollupUserLogic_factory } from "../src/factorys/rollup/RollupUserLogic";
+import { NodeInterface_factory } from "../src/factorys/arbos/NodeInterface.f";
+import { RollupUserLogic_factory } from "../src/factorys/rollup/RollupUserLogic.f";
 import { arb_getBlockByHash } from "../src/rpc/rpc";
 import { ArbBlock } from "../src/type";
-import { ArbSys_factory } from "../src/factorys/arbos/AybSys";
-import { Outbox_factory } from "../src/factorys/rollup/OutBox";
+import { ArbSys_factory } from "../src/factorys/arbos/AybSys.f";
+import { Outbox_factory } from "../src/factorys/rollup/OutBox.f";
 import { IL2ToL1Tx } from "../src/type/contractType";
 
 async function main() {

@@ -1,23 +1,68 @@
 {
-    "__comment_Sepolia_":"########### Sepolia ###########",
-    "11155111":{
-        "inbox": "0xaAe29B0366299461418F5324a79Afc425BE5ae21",
-        "outbox":"0x65f07C7D521164a4d5DaC6eB8Fac8DA067A3B78F",
-        "rollup":"0xd80810638dbDF9081b72C1B33c65375e807281C8",
-        "sequencerInbox":"",
-        "feeToken":""
-    },
-    "__comment_SepoliaArb_":"########### SepoliaArb ###########",
-    "421614":{},
+  "__comment_Ethereum_": "########### Ether Mainnet ###########",
+  "1": {
+    "inbox": "0xaAe29B0366299461418F5324a79Afc425BE5ae21",
+    "outbox": "0x65f07C7D521164a4d5DaC6eB8Fac8DA067A3B78F",
+    "rollup": "0xd80810638dbDF9081b72C1B33c65375e807281C8",
+    "sequencerInbox": "",
+    "feeToken": "",
+    "erc20": "0x5dc60C4D5e75D22588FA17fFEB90A63E535efCE0"
+  },
+  "__comment_Arbitrum_": "########### Arbitrum Mainnet ###########",
+  "42161": {
+    "erc20": ""
+  },
 
-    "__comment_Dev1_":"########### Dev Layer1 ###########",
-    "4693":{
-        "inbox": "0xEa6C29a19fCDB7518E5fD0A572669f114d0dDd3b",
-        "outbox":"0x32425faB271badEdcEE975177310D3ca7133bCe9",
-        "rollup":"0x758e1C29CF3edb83e70c53F96659966aB73C363d",
-        "sequencerInbox":"0xc53BDd1F6370790F9574BaB58f8df5C160672A85",
-        "feeToken":"0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E"
-    },
-    "__comment_Dev2":"########### Dev Layer2 ###########",
-    "412346":{}
+
+  
+  "__comment_Sepolia_": "########### Sepolia ###########",
+  "11155111": {
+    "inbox": "0xaAe29B0366299461418F5324a79Afc425BE5ae21",
+    "outbox": "0x65f07C7D521164a4d5DaC6eB8Fac8DA067A3B78F",
+    "rollup": "0xd80810638dbDF9081b72C1B33c65375e807281C8",
+    "sequencerInbox": "",
+    "l1CustomGateway": "0xba2F7B6eAe1F9d174199C5E4867b563E0eaC40F3",
+    "l1ERC20Gateway": "0x902b3E5f8F19571859F4AB1003B960a5dF693aFF",
+    "l1GatewayRouter": "0xcE18836b233C83325Cc8848CA4487e94C6288264",
+    "feeToken": "",
+    "erc20": "0x52419051B1406766871D00561Df6055b7fB11C04"
+  },
+  "__comment_SepoliaArb_": "########### SepoliaArb ###########",
+  "421614": {
+    "l2CustomGateway": "0x8Ca1e1AC0f260BC4dA7Dd60aCA6CA66208E642C5",
+    "l2ERC20Gateway": "0x6e244cD02BBB8a6dbd7F626f05B2ef82151Ab502",
+    "l2GatewayRouter": "0x9fDD1C4E4AA24EEc1d913FABea925594a20d43C7",
+    "erc20": "0x6529474d6B489f020FDc8049CFE6b8381D545B5b"
+  },
+
+
+
+
+  "__comment_Dev1_": "########### Dev Layer1 ###########",
+  "4693": {
+    "inbox": "0x1BE5E95852ea9F90322643Fc1e98Ca64B463A7D0",
+    "outbox": "0xF07EF0896d15E3423CC4E8A7355084aEdBD5BeF1",
+    "rollupEventInbox":"",
+    "challengeManager":"",
+    "AdminProxy":"",
+    "sequencerInbox": "0x20645523a0E98c94b11E27BE8e95a0259aa6cd5e",
+    "Bridge":"",
+    "ValidatorUtils":"",
+    "ValidatorWalletCreator":"",
+    "rollup": "0x758e1C29CF3edb83e70c53F96659966aB73C363d",
+    "feeToken": "0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E",
+    "l1CustomGateway": "0x4721c9FdFdac7FfBcd4cB57045Fa014Ed54C3d13",
+    "l1ERC20Gateway": "0xC8fD7e7Df0D47b30eFf96577385dbbf3aFbfbDF7",
+    "l1GatewayRouter": "0x0BC1CDEf8a02A24180813e380beC1846858Fa737",
+    "erc20": "0x05006746Af2d4dafEDe30C5a3A841e74bAF48343"
+  },
+  "__comment_Dev2_": "########### Dev Layer2 ###########",
+  "412346": {
+    "feeToken": "0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E",
+    "erc20": ""
+  },
+  "__comment_Dev3_": "########### Dev Layer3 ###########",
+  "333333": {
+    "erc20": ""
+  }
 }

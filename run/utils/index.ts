@@ -13,7 +13,7 @@ async function main() {
       layer,
       l1url: { default: process.env.L1_URL },
       l2url: { default: process.env.L2_URL },
-      l3url: { default: process.env.L3_URL },
+      l3url: { default: process.env.L3_URL }
     })
     .command("erc20", "Call about ERC-20 utils", ERC20Command)
     .command("native", "Call about Native utils", NativeCommand)

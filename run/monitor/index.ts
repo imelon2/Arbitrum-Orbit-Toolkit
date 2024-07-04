@@ -6,7 +6,7 @@ import { JsonRpcProvider } from "../../src/type";
 import { Wallet } from "ethers";
 import { ABI_BRIDGE_ABI_ROOT, ABI_NITRO_ABI_ROOT, ABI_ROOT, readRollupCA } from "../../src/config";
 import { readJSONFilesInFolder } from "../../src/modules/abiReader";
-import { BaseContract } from "../../src/factorys/base";
+import { BaseContract } from "../../src/factorys/base.f";
 
 dotenv.config();
 

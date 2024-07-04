@@ -1,12 +1,12 @@
 import { BigNumber, Overrides, Wallet, ethers } from "ethers";
-import { BaseContract } from "../base";
 import {
   abi,
   bytecode,
 } from "@arbitrum/nitro-contracts/build/contracts/src/bridge/ERC20Inbox.sol/ERC20Inbox.json";
 import { LogFinishTime } from "../_decorators/common";
+import { InboxBase } from "./InboxBase.f";
 
-export class ERC20Inbox_factory extends BaseContract {
+export class ERC20Inbox_factory extends InboxBase {
   constructor(
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,

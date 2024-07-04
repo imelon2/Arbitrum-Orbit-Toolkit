@@ -94,7 +94,7 @@ const transfer = async (
 
     console.log(`transfer transaction by hash ${response.hash}`);
 
-    const receipt = response.wait();
+    const receipt = await response.wait();
     console.log(receipt);
   } catch (error) {
     console.error(error);

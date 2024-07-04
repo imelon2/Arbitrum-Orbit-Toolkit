@@ -1,5 +1,5 @@
 import { Wallet, ethers } from "ethers";
-import { BaseContract } from "../base";
+import { BaseContract } from "../base.f";
 import {abi,bytecode} from "../../../build/contracts/contracts/L1DKA.sol/DkargoToken.json"
 
 export class EthDka_factory extends BaseContract {
