@@ -1,0 +1,52 @@
+<type>(<scope>): <summary>
+# ──────────────────────────────── 80 chars ───────────────────────────────────┤
+
+<Describe the motivation behind this change - explain WHY you are making this
+change. Wrap all lines at 80 characters.>
+
+See #<reference>
+
+Resolves: #<issue number>
+Related: #<issue number>
+
+# ──────────────────────────────── 80 chars ───────────────────────────────────┤
+
+
+# Example Commit Messages
+# =======================
+
+
+# ─── Example: Simple refactor ────────────────────────────────────────────────┤
+# refac: remove system dictator
+#
+# Since the owner of all contracts in this system is ProxyAdmin, SystemDictator
+# is no longer necessary. Additionally, the deployment scripts have been
+# modified to update the proxy when deploying implementation contracts.
+#
+# Resolves: #36332
+# ─────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Example: Simple docs change ─────────────────────────────────────────────┤
+# docs: update commit message format
+# ─────────────────────────────────────────────────────────────────────────────┤
+
+
+# ─── Example: A bug fix ──────────────────────────────────────────────────────┤
+# fix(trie): use hash once on account to compute path
+#
+# Path must be computed using poseidon hash once. But, by mistake, it
+# was computed using twice.
+# ─────────────────────────────────────────────────────────────────────────────┤
+
+# ─── Example: A feature ──────────────────────────────────────────────────────┤
+# feat!: use keccak256 for codehash
+#
+# BREAKING CHANGE: Previously, codehash was calculated using poseidon.
+# So the state root since this commit will be produced differently.
+#
+# See belows for details.
+#
+# - https://eips.ethereum.org/EIPS/eip-1052
+# - https://github.com/scroll-tech/go-ethereum/pull/188
+# ─────────────────────────────────────────────────────────────────────────────┤
