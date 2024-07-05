@@ -14,7 +14,7 @@ export class Inbox_factory extends InboxBase {
     contractName: string = "Inbox",
     _abi: any = abi // If need integrated ABI
   ) {
-    super(provider, signer, address, contractName,_abi, bytecode);
+    super(provider, signer, address,contractName,_abi, bytecode);
   }
 
   @LogFinishTime
@@ -26,7 +26,7 @@ export class Inbox_factory extends InboxBase {
       console.log("Deposit amount : " + amount.toString());
 
       // /** @fixed Duplicate `depositEth` function name */
-      const response = (await this.contract!["depositEth()"]({
+      const response = (await this.contract["depositEth()"]({
         ...overrides,
         value: amount,
       })) as ethers.providers.TransactionResponse;

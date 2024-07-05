@@ -10,3 +10,7 @@ export const ABI_BRIDGE_ABI_ROOT_Test= path.join(__dirname, "../../node_modules/
 
 export const PARSE_ROLLUP_INPUT= path.join(__dirname, "../cache/calldata.txt");
 export const PARSE_ROLLUP_OUTPUT= path.join(__dirname, "../cache/calldata.json");
+
+export const Arb_Abi_Path = () => {
+    return [ABI_NITRO_ABI_ROOT,ABI_BRIDGE_ABI_ROOT]
+  }

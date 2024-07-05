@@ -57,7 +57,7 @@ npm run bridge erc20-bridge claimWithdraw -- --withdrawL2Hash[--l2hash] --ca [de
 ## Rollup CLI
 ### Config
 ```bash
-npm run rollup config getlatestConfirmedNodeNum
+npm run rollup rollup getlatestConfirmedNodeNum
 ```
 
 ## Utils CLI

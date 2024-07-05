@@ -19,7 +19,7 @@ export const decodeLogsEventConsole = (_logs: ethers.providers.Log[],root:any[])
         return console.log("No Logs");
     }
     logs.forEach((log,i) => {
-        console.log(`${ansi.BrightMagenta}############################ ${i} index logs message ############################${ansi.reset}`);
+        console.log(`${ansi.Magenta}############################ ${i} index logs message ############################${ansi.reset}`);
         let params:any = {}
         log.eventFragment.inputs.forEach((param,i) => {
             const arg = log.args[i];

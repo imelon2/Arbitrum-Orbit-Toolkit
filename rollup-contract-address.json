@@ -13,8 +13,6 @@
     "erc20": ""
   },
 
-
-  
   "__comment_Sepolia_": "########### Sepolia ###########",
   "11155111": {
     "inbox": "0xaAe29B0366299461418F5324a79Afc425BE5ae21",
@@ -35,34 +33,55 @@
     "erc20": "0x6529474d6B489f020FDc8049CFE6b8381D545B5b"
   },
 
-
-
-
   "__comment_Dev1_": "########### Dev Layer1 ###########",
   "4693": {
-    "inbox": "0x1BE5E95852ea9F90322643Fc1e98Ca64B463A7D0",
-    "outbox": "0xF07EF0896d15E3423CC4E8A7355084aEdBD5BeF1",
-    "rollupEventInbox":"",
-    "challengeManager":"",
-    "AdminProxy":"",
-    "sequencerInbox": "0x20645523a0E98c94b11E27BE8e95a0259aa6cd5e",
-    "Bridge":"",
-    "ValidatorUtils":"",
-    "ValidatorWalletCreator":"",
-    "rollup": "0x758e1C29CF3edb83e70c53F96659966aB73C363d",
-    "feeToken": "0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E",
-    "l1CustomGateway": "0x4721c9FdFdac7FfBcd4cB57045Fa014Ed54C3d13",
-    "l1ERC20Gateway": "0xC8fD7e7Df0D47b30eFf96577385dbbf3aFbfbDF7",
-    "l1GatewayRouter": "0x0BC1CDEf8a02A24180813e380beC1846858Fa737",
-    "erc20": "0x05006746Af2d4dafEDe30C5a3A841e74bAF48343"
+    "_1_": "----------------- 🔎 Parent System Contract -----------------",
+    "rollup": "0x9E014fca164C3658488B95583d493AaB92527082",
+    "inbox": "0x1dfF7daad02E6E689Bdd391790370C1B4dEBfA7A",
+    "outbox": "0xb99015580F998A87ea0d473598E2995DCAcB65bb",
+    "rollupEventInbox": "0xa805d01175e7512Bb354f5Bd68916f78dc06e14b",
+    "challengeManager": "0x0076f8B1838a35ef71797fcc0d0c1F332a6C19a0",
+    "adminProxy": "0x6f45bae398D0eCd9BbFd62a2D1358142D25d2366",
+    "sequencerInbox": "0xb930653aD9b65E168882F4f2A2f8bFc4B8771d34",
+    "bridge": "0x0B9beEb314d35468F190B5a1b7b02Ef22c4BD430",
+    "validatorUtils": "0xd06efD7eeb43ee365a42Ad7eA4540d918F8C1eDb",
+    "validatorWalletCreator": "0x5D2B11de10e838aFF269e5aA75D295a4b1E73289",
+    "l1CustomGateway": "",
+    "l1ERC20Gateway": "",
+    "l1GatewayRouter": "",
+    "feeToken": "",
+    "erc20": ""
   },
   "__comment_Dev2_": "########### Dev Layer2 ###########",
   "412346": {
+    "_1_": "----------------- 🔎 Child System Contract -----------------",
+    "l2CustomGateway": "0xF5539b1e5E662bae90F46E1c598293cb501632Bc",
+    "l2ERC20Gateway": "0xAA56013EB577F3110594b9eA352d798f6079005F",
+    "l2GatewayRouter": "0x8a9E9b0671DA56bE5DC903F4011be5f03cBfEcE6",
+
+    "_2_": "----------------- 🔎 Parent System Contract -----------------",
+    "rollup": "0x574404c19C87AAC472A38331D54CCbaD0f86e078",
+    "inbox": "0xa3219458feEe64C26Bfe9F3CbA50765F6Fd76e09",
+    "outbox": "0xEc06ADfAfeB0cc98E8fDCd85bfe9cb23f63E6F83",
+    "rollupEventInbox": "0xAa1b639D2DcD76BBd0dB08fa5ebFeA0Faf6Af427",
+    "challengeManager": "0x6E9369732EF2a4b917dafE10B7f5e6B5BB8dd506",
+    "adminProxy": "0x65D0236aF89f27579f1745D66704F79f8bb69a4C",
+    "sequencerInbox": "0x1f92A9A7D49387aab28cD4740Ec3bac92722FB95",
+    "bridge": "0x1DeA7Ff5dE2503f950A4A80788567B810BE62d4e",
+    "validatorUtils": "0x9aA083eE744Bf49D2E9B5F244AC62030e544E659",
+    "validatorWalletCreator": "0x44337e56782D4D372b5A080d9bA005E0D991F0c7",
+    "l1CustomGateway": "0x4721c9FdFdac7FfBcd4cB57045Fa014Ed54C3d13",
+    "l1ERC20Gateway": "0xC8fD7e7Df0D47b30eFf96577385dbbf3aFbfbDF7",
+    "l1GatewayRouter": "0x0BC1CDEf8a02A24180813e380beC1846858Fa737",
     "feeToken": "0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E",
     "erc20": ""
   },
   "__comment_Dev3_": "########### Dev Layer3 ###########",
   "333333": {
+    "_1_": "----------------- 🔎 Child System Contract -----------------",
+    "l2CustomGateway": "0x3de1F49Bb77F73243bc95BC5A95ff705045B23e6",
+    "l2ERC20Gateway": "0xd65a6D84844314A1ec81389daa3A126d49ABDDbD",
+    "l2GatewayRouter": "0x5C8aa2a1e86a284BE26C9CFA5daf57E5bc7208EA",
     "erc20": ""
   }
 }

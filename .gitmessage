@@ -75,3 +75,5 @@ footer
 # - https://eips.ethereum.org/EIPS/eip-1052
 # - https://github.com/scroll-tech/go-ethereum/pull/188
 # ─────────────────────────────────────────────────────────────────────────────┤
+
+#  git config --global commit.template .gitmessage

@@ -9,6 +9,11 @@ import {
 } from "ethers";
 import { ansi } from "../utils/logStyle";
 import { CallParam } from "../type";
+import { decodeLogsEventConsole } from "../modules/logEventParser.m";
+import { Arb_ABI } from "../modules/abiReader";
+import { logDecodedCalldata, logTransactionReceipt } from "../utils/log";
+import { Arb_Abi_Path } from "../config";
+import { decodeCalldata } from "../modules/calldata.m";
 
 export class BaseContract {
   protected provider: ethers.providers.JsonRpcProvider;
@@ -75,12 +80,19 @@ export class BaseContract {
     return this.interface.encodeFunctionData(name, params);
   }
 
+  //@ TODO
   parseLogs(logs: { topics: Array<string>; data: string }[]) {
     if (!this.interface) {
       throw new Error(`No import ${this.contractName} contract`);
     }
 
+    console.log(logs);
+    
+    
     return logs.map((log) => {
+      console.log("is?");
+      console.log(log);
+      
         return this.interface!.parseLog(log);
     });
   }
@@ -129,47 +141,32 @@ export class BaseContract {
     return response;
   };
 
-  // moniter(eventName: string | EventFilter = "*") {
-  //   if (!this.contract) {
-  //     throw new Error(`No import ${this.contractName} contract`);
-  //   }
+  moniter(eventName: string | EventFilter = "*") {
+    if (!this.contract) {
+      throw new Error(`No import ${this.contractName} contract`);
+    }
 
-  //   console.log(
-  //     `${ansi.BrightWhite}[Run] Start Monitoring at ${this.contractName} Contract ${this.address} \n ${ansi.reset}`
-  //   );
+    console.log(
+      `${ansi.BrightWhite}[Run] Start Monitoring at ${this.contractName} Contract ${this.address} \n ${ansi.reset}`
+    );
 
-  //   this.contract.on(eventName, async (data) => {
-  //     const finishTime = new Date();
-  //     console.log(
-  //       `${ansi.Yellow}[MONITOR LOG] Emit event ${ansi.BrightMagenta}${
-  //         data.event
-  //       } ${ansi.reset}${ansi.Yellow} on ${
-  //         this.contractName
-  //       } contract at ${finishTime.toLocaleString()}${ansi.reset}`
-  //     );
+    this.contract.on(eventName, async (data) => {
+      const finishTime = new Date();
+      console.log(
+        `${ansi.Yellow}[MONITOR LOG] Emit event ${ansi.BrightMagenta}${
+          data.event
+        } ${ansi.reset}${ansi.Yellow} on ${
+          this.contractName
+        } contract at ${finishTime.toLocaleString()}${ansi.reset}`
+      );
 
-  //     const recepit = await data.getTransactionReceipt();
-
-  //     console.log(recepit);
-  //     const result: any[] = [];
-  //     const logs = this.parseLogs(recepit.logs);
-  //     logs.forEach((log, i) => {
-  //       let params: any = {};
-  //       log.eventFragment.inputs.forEach((param, i) => {
-  //         const arg = log.args[i];
-  //         params[`${param.name}(${param.type})`] = BigNumber.isBigNumber(arg)
-  //           ? BigNumber.from(arg).toString()
-  //           : arg;
-  //       });
-  //       const _result = {
-  //         name: log.name,
-  //         signature: log.signature,
-  //         topic: log.topic,
-  //         params,
-  //       };
-  //       result.push(_result);
-  //     });
-  //     console.log(result);
-  //   });
-  // }
+      
+      const recepit = await data.getTransactionReceipt();
+      const tx = await data.getTransaction();
+      logTransactionReceipt(recepit)
+      const decoded = await decodeCalldata(tx.data,Arb_Abi_Path())
+      logDecodedCalldata(decoded)
+      decodeLogsEventConsole(recepit.logs,Arb_Abi_Path())
+    });
+  }
 }

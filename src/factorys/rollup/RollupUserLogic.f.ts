@@ -5,12 +5,6 @@ import {
   bytecode,
 } from "@arbitrum/nitro-contracts/build/contracts/src/rollup/RollupUserLogic.sol/RollupUserLogic.json";
 import { Arb_ABI } from "../../modules/abiReader";
-import { decodeLogsEvent } from "../../modules/logEventParser.m";
-import {
-  ABI_NITRO_ABI_ROOT,
-  ABI_BRIDGE_ABI_ROOT,
-  ABI_ROOT,
-} from "../../config";
 
 export class RollupUserLogic_factory extends BaseContract {
   constructor(
@@ -73,7 +67,7 @@ export class RollupUserLogic_factory extends BaseContract {
     try {
       if (!this.contract)
         throw new Error(`no import ${this.contractName} contract`);
-      
+
       // EventFetcher.getEvents
       const eventFilter = this.contract.filters["NodeCreated"](
         latestConfirmedNodeNum

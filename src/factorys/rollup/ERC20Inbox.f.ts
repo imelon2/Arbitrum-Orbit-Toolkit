@@ -14,7 +14,7 @@ export class ERC20Inbox_factory extends InboxBase {
     contractName: string = "ERC20Inbox",
     _abi:any = abi // If need integrated ABI
   ) {
-    super(provider, signer, _abi, bytecode, contractName, address);
+    super(provider, signer, address,contractName,_abi, bytecode);
   }
 
   @LogFinishTime
@@ -23,8 +23,8 @@ export class ERC20Inbox_factory extends InboxBase {
       if (!this.contract)
         throw new Error(`no import ${this.contractName} contract`);
       console.log("Deposit amount : " + amount.toString());
-
-      const response = (await this.contract.depositERC20(
+      
+      const response = (await this.contract["depositERC20(uint256)"](
         amount,
         { ...overrides } || undefined
       )) as ethers.providers.TransactionResponse;

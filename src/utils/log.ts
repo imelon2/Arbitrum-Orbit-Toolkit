@@ -1,5 +1,6 @@
 import readline from "readline";
 import { ansi } from "./logStyle";
+import { ethers } from "ethers";
 
 
 export const logConfirm = async (
@@ -98,3 +99,31 @@ export const logSuccessMsg = () => {
 ${ansi.RedGreen} SUCCESS ${ansi.reset}`;
   console.log(msg);
 }
+
+export const logTransactionReceipt = (
+  receipt: ethers.providers.TransactionReceipt
+) => {
+  const msg = `
+${ansi.Magenta}Transaction Receipt${ansi.reset}
+    ${ansi.BrightWhite}transaction hash : ${receipt.transactionHash}${ansi.reset}
+    gas used : ${receipt.gasUsed}
+    effectiveGasPrice gas : ${receipt.effectiveGasPrice}
+    block hash : ${receipt.blockHash}
+    block number : ${receipt.blockNumber}
+    form : ${receipt.from}
+    to : ${receipt.to}
+  `;
+
+  console.log(msg);
+};
+
+export const logDecodedCalldata = (
+  data:any
+) => {
+  const msg = `
+${ansi.Magenta}Decoded Calldata${ansi.reset}
+${JSON.stringify(data,null,4)}
+  `;
+
+  console.log(msg);
+};

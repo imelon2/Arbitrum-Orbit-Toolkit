@@ -14,7 +14,7 @@ export class InboxBase extends BaseContract {
     _abi: any = abi,
     _bytecode: any = bytecode,
   ) {
-    super(provider, signer, abi, bytecode, contractName, address);
+    super(provider, signer, _abi, _bytecode, contractName, address);
   }
 
   async calculateRetryableSubmissionFee(

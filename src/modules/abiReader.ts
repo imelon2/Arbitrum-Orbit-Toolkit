@@ -1,5 +1,6 @@
 import fs from "fs";
 import * as path from "path";
+import { ABI_NITRO_ABI_ROOT, ABI_BRIDGE_ABI_ROOT, Arb_Abi_Path } from "../config";
 
 export function readJSONFilesInFolder(
   folderPaths: any[],
@@ -87,4 +88,9 @@ export function readJSONFilesInFolderBytescode(folderPath: any) {
     }
   });
 return bundlingABI
+}
+
+
+export const Arb_ABI = (type: "function" | "error" | "event" = "function") => {
+  return readJSONFilesInFolder(Arb_Abi_Path(),type)
 }
