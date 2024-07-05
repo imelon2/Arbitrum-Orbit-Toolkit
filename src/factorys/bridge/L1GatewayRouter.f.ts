@@ -39,7 +39,7 @@ export class L1GatewayRouter_factory extends BaseContract {
       const response = (await this.contract[
         "outboundTransfer(address,address,uint256,uint256,uint256,bytes)"
       ](l1Token, to, amount, _maxGas, _gasPriceBid, data, {
-        ...overrides
+        ...overrides,
       })) as ethers.providers.TransactionResponse;
 
       console.log(
@@ -54,18 +54,28 @@ export class L1GatewayRouter_factory extends BaseContract {
 
   async getRetryTicketInnerData(
     l1TokenAddress: address,
-    to: address
+    to: address,
+    isFeeToken: boolean
   ): Promise<IRetryableTicket | undefined> {
     try {
       /**
        * @https://github.com/OffchainLabs/nitro-contracts/blob/90037b996509312ef1addb3f9352457b8a99d6a6/src/bridge/AbsInbox.sol#L282
        * This Zombie Data for surface `revert RetryableData` from `Inbox._unsafeCreateRetryableTicket()`
        */
-      const _zombieData = getOutboundTransferData(BigNumber.from(1));
       const _zombieAmount = BigNumber.from(1);
       const _zombieMaxGas = BigNumber.from(1);
       const _zombieGasPriceBid = BigNumber.from(1);
+
+      /** if Orbit use FeeToken, L2Fee insert `OutboundTransfer` data */
+      const _zombieData = isFeeToken
+        ? getOutboundTransferData({
+            maxSubmissionCost: BigNumber.from(0),
+            gasLimit: BigNumber.from(1),
+            maxFeePerGas: BigNumber.from(1),
+          })
+        : getOutboundTransferData(BigNumber.from(1));
       const _zombieValue = BigNumber.from(2);
+
       const calldata = this.encodeFunctionData("outboundTransfer", [
         l1TokenAddress,
         to,
@@ -78,7 +88,7 @@ export class L1GatewayRouter_factory extends BaseContract {
       const res = await this.getReturnData({
         to: this.address,
         data: calldata,
-        value: _zombieValue,
+        value: isFeeToken ? BigNumber.from(0) :_zombieValue,
         from: this.signer.address,
       });
 

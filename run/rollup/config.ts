@@ -12,7 +12,7 @@ export const RollupCommand = (yargs: Argv) => {
     describe: "get Latest Confirm Node(RBlock)",
     handler: async (argv: any) => {
       const { provider, wallet } = initProvider(
-        argv.l1url,
+        argv[argv.layer + "url"],
         process.env.SIGNER_PK_KEY!
       );
       const result = await latestConfirmed(provider, wallet);
@@ -32,7 +32,7 @@ export const RollupCommand = (yargs: Argv) => {
     },
     handler: async (argv: any) => {
       const { provider, wallet } = initProvider(
-        argv.l1url,
+        argv[argv.layer + "url"],
         process.env.SIGNER_PK_KEY!
       );
       const result = await getNode(argv.number,provider, wallet);
@@ -44,12 +44,12 @@ export const RollupCommand = (yargs: Argv) => {
 };
 
 const latestConfirmed = async (
-  providerL1: JsonRpcProvider,
-  signerL1: Wallet
+  provider: JsonRpcProvider,
+  signer: Wallet
 ) => {
   try {
-    const { rollup } = await readRollupCA(providerL1);
-    const Rollup = new RollupUserLogic_factory(providerL1, signerL1, rollup);
+    const { rollup } = await readRollupCA(provider);
+    const Rollup = new RollupUserLogic_factory(provider, signer, rollup);
     return await Rollup.latestConfirmed();
   } catch (error) {
     console.error(error);

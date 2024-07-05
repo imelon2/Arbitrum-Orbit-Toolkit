@@ -90,11 +90,13 @@ const transfer = async (
     const response = await signer.sendTransaction({
       to,
       value: transferAmount,
+      gasLimit:50000
     });
-
+    const finishTime = new Date(); // 함수 실행 완료 시점의 현재 시간
     console.log(`transfer transaction by hash ${response.hash}`);
-
+    
     const receipt = await response.wait();
+    console.log(`[Log] transafer coin finished at ${finishTime.toLocaleString()}`);
     console.log(receipt);
   } catch (error) {
     console.error(error);

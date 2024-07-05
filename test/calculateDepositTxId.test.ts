@@ -5,8 +5,6 @@ const formatNumber = (numberVal: BigNumber): Uint8Array => {
   return ethers.utils.stripZeros(numberVal.toHexString());
 };
 
-// 2:00:22
-// 2:01:15
 /**
  * @abstract EthDepositMessage.calculateDepositTxId
  * ts-node test/calculateDepositTxId.test.ts 

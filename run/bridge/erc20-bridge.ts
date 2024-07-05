@@ -1,6 +1,6 @@
 import { Argv } from "yargs";
 import { initProvider, verifyContractAddress } from "../common";
-import { Wallet } from "ethers";
+import { BigNumber, Wallet } from "ethers";
 import { ArbBlock, JsonRpcProvider } from "../../src/type";
 import { L1GatewayRouter_factory } from "../../src/factorys/bridge/L1GatewayRouter.f";
 import { getAddress, hexDataLength, parseEther } from "ethers/lib/utils";
@@ -14,28 +14,32 @@ import {
   ABI_NITRO_ABI_ROOT,
   readRollupCA,
 } from "../../src/config";
-import { InboxBase } from "../../src/factorys/rollup/InboxBase.f";
-import { NodeInterface_factory } from "../../src/factorys/arbos/NodeInterface.f";
-import { getOutboundTransferData } from "../../src/utils/bridger";
-import { L2GatewayRouter_factory } from "../../src/factorys/bridge/L2GatewayRouter.f";
+import {
+  ERC20Bridge_factory,
+  InboxBase,
+  RollupUserLogic_factory,
+  Outbox_factory,
+} from "../../src/factorys";
 import { ArbSys_factory } from "../../src/factorys/arbos/AybSys.f";
-import { RollupUserLogic_factory } from "../../src/factorys/rollup/RollupUserLogic.f";
+import { NodeInterface_factory } from "../../src/factorys/arbos/NodeInterface.f";
+import { L2GatewayRouter_factory } from "../../src/factorys/bridge/L2GatewayRouter.f";
+import { decodeLogsEvent } from "../../src/modules/logEventParser.m";
 import { arb_getBlockByHash } from "../../src/rpc/rpc";
 import { IL2ToL1Tx } from "../../src/type/contractType";
-import { decodeLogsEvent } from "../../src/modules/logEventParser.m";
-import { Outbox_factory } from "../../src/factorys/rollup/OutBox.f";
+import { getOutboundTransferData } from "../../src/utils/bridger";
 
 export const ERC20BridgeCommand = (yargs: Argv) => {
   return yargs
     .options({
-      erc20_ca: {
+      contractAddress: {
         default: "erc20",
+        alias: ["ca"],
         string: true,
       },
     })
     .command({
       command: "depositERC20",
-      aliases:["d-erc20"],
+      aliases: ["d-erc20"],
       describe: "",
       builder: {
         amount: {
@@ -58,7 +62,7 @@ export const ERC20BridgeCommand = (yargs: Argv) => {
 
         const l1TokenAddress = await verifyContractAddress(
           providerl1,
-          argv.erc20_ca
+          argv.contractAddress
         );
 
         await deposit(
@@ -96,7 +100,7 @@ export const ERC20BridgeCommand = (yargs: Argv) => {
 
         const l1TokenAddress = await verifyContractAddress(
           providerl1,
-          argv.erc20_ca
+          argv.contractAddress
         );
 
         await withdraw(
@@ -158,7 +162,7 @@ export const ERC20BridgeCommand = (yargs: Argv) => {
           process.env.SIGNER_PK_KEY!
         );
 
-        const {proof,L2ToL1Tx_Log} = await getProof(
+        const { proof, L2ToL1Tx_Log } = await getProof(
           argv.withdrawL2Hash,
           providerL1,
           providerL2,
@@ -166,7 +170,12 @@ export const ERC20BridgeCommand = (yargs: Argv) => {
           signerL2
         );
 
-        const result = await claimWithdraw(proof.proof,L2ToL1Tx_Log,providerL1,signerL1)
+        const result = await claimWithdraw(
+          proof.proof,
+          L2ToL1Tx_Log,
+          providerL1,
+          signerL1
+        );
         console.log(result);
       },
     });
@@ -181,7 +190,10 @@ const deposit = async (
   signerL1: Wallet,
   signerL2: Wallet
 ) => {
-  const { inbox, l1GatewayRouter } = await readRollupCA(providerL1);
+  const { inbox, l1GatewayRouter, bridge } = await readRollupCA(providerL1);
+  const Bridge = new ERC20Bridge_factory(providerL1, signerL1, bridge);
+
+  const isFeeToken = (await Bridge.nativeToken()) ? true : false;
 
   /** Verify address & will return Error */
   to = getAddress(to);
@@ -194,7 +206,8 @@ const deposit = async (
 
   const retryTicket = await L1ERC20Gateway.getRetryTicketInnerData(
     l1TokenAddress,
-    to
+    to,
+    isFeeToken
   );
 
   const Inbox = new InboxBase(providerL1, signerL1, inbox);
@@ -219,9 +232,19 @@ const deposit = async (
 
   const NodeInterface = new NodeInterface_factory(providerL2, signerL2);
   const gasLimit = await NodeInterface.estimateRetryableTicket(retryTicket!);
-  const value = gasLimit?.mul(max_fee_per_gas).add(maxSubmissionFee);
 
-  const data = getOutboundTransferData(maxSubmissionFee);
+  /** if Orbit use FeeToken, L2Fee insert `OutboundTransfer` data */
+  const data = isFeeToken
+    ? getOutboundTransferData({
+        maxSubmissionCost: maxSubmissionFee,
+        gasLimit,
+        maxFeePerGas: max_fee_per_gas,
+      })
+    : getOutboundTransferData(maxSubmissionFee);
+
+  /** if Orbit use FeeToken, require(msg.value == 0, "NO_VALUE");
+   * https://github.com/OffchainLabs/token-bridge-contracts/blob/92c3caba883c057c41461162d1795723b1c35986/contracts/tokenbridge/ethereum/gateway/L1OrbitERC20Gateway.sol#L29
+   */
   const receipt = await L1ERC20Gateway.outboundTransfer(
     l1TokenAddress,
     to,
@@ -229,7 +252,12 @@ const deposit = async (
     gasLimit!,
     max_fee_per_gas,
     data,
-    { value, gasLimit: 5000000 }
+    {
+      value: isFeeToken
+        ? 0
+        : gasLimit?.mul(max_fee_per_gas).add(maxSubmissionFee),
+      gasLimit: 5000000,
+    }
   );
 
   console.log(receipt);
@@ -249,13 +277,13 @@ const withdraw = async (
 
   const withdrawAmountToL1 = parseEther(amount);
 
-  const L1ERC20Gateway = new L2GatewayRouter_factory(
+  const L2ERC20Gateway = new L2GatewayRouter_factory(
     providerL2,
     signerL2,
     l2GatewayRouter
   );
 
-  const receipt = await L1ERC20Gateway.outboundTransfer(
+  const receipt = await L2ERC20Gateway.outboundTransfer(
     l1TokenAddress,
     to,
     withdrawAmountToL1,
@@ -274,14 +302,15 @@ const getProof = async (
 ) => {
   const { rollup } = await readRollupCA(providerL1);
   const Rollup = new RollupUserLogic_factory(providerL1, signerL1, rollup);
-  const ArbSys = new ArbSys_factory(providerL2, signerL2);
   const NodeInterface = new NodeInterface_factory(providerL2, signerL2);
 
   // (1) get Latest Confirm Node(=RBlock)
   const latestConfirmedNodeNum = await Rollup.latestConfirmed();
 
   // (2) get Latest Confirm Node Created At Block L1
-  const { createdAtBlock } = await Rollup.getNode(latestConfirmedNodeNum!);
+  const createdAtBlock = await Rollup.getNodeCreationBlockForLogLookup(
+    latestConfirmedNodeNum!
+  );
 
   // (3) latest Confirmed Node의 마지막 L2 Blockhash
   const state = await Rollup.getLatestConfirmedNodeState(
@@ -335,12 +364,14 @@ const getProof = async (
 };
 
 const claimWithdraw = async (
-  proof:string[],
-  L2ToL1Tx_Log:IL2ToL1Tx,
+  proof: string[],
+  L2ToL1Tx_Log: IL2ToL1Tx,
   providerL1: JsonRpcProvider,
   signerL1: Wallet
 ) => {
   const { outbox } = await readRollupCA(providerL1);
   const Outbox = new Outbox_factory(providerL1, signerL1, outbox);
-  return await Outbox.executeTransaction(proof,L2ToL1Tx_Log,{gasLimit:5000000});
+  return await Outbox.executeTransaction(proof, L2ToL1Tx_Log, {
+    gasLimit: 5000000,
+  });
 };
