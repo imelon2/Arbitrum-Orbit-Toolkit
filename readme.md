@@ -28,36 +28,37 @@ This repository provides developers with powerful tools and libraries designed t
 ### Deposit
 ```bash
 # For chains with "ether" network fees
-npm run bridge native-bridge depositEth[d-eth] -- --amount[--a] 
+npm run bridge native-bridge depositEth[d-eth] -- --amount[a] 
 
 # For chains with "fee token" network fees
-npm run bridge native-bridge depositOrbit[d-orbit] -- --amount[--a] 
+npm run bridge native-bridge depositOrbit[d-orbit] -- --amount[a] 
 ```
 
 ### Withdraw
 ```bash
-npm run bridge native-bridge withdraw[w] -- --amount[--a] 
-npm run bridge native-bridge getProof -- --withdrawL2Hash[--l2hash]
-npm run bridge native-bridge claimWithdraw -- --withdrawL2Hash[--l2hash]
+npm run bridge native-bridge withdraw[w] -- --amount[a] 
+npm run bridge native-bridge getProof -- --withdrawL2Hash[l2hash]
+npm run bridge native-bridge claimWithdraw -- --withdrawL2Hash[l2hash]
 ```
 
 ## ERC20 bridge CLI
 ### Deposit
 ```bash
-npm run bridge erc20-bridge depositERC20[d-erc20] -- --amount[--a] --ca [default:erc20]
+npm run bridge erc20-bridge depositERC20[d-erc20] -- --amount[a] --ca [default:erc20]
 ```
 
 ### Withdraw
 ```bash
-npm run bridge erc20-bridge withdraw[w] -- --amount[--a] --ca [default:erc20]
-npm run bridge erc20-bridge getProof -- --withdrawL2Hash[--l2hash] --ca [default:erc20]
-npm run bridge erc20-bridge claimWithdraw -- --withdrawL2Hash[--l2hash] --ca [default:erc20]
+npm run bridge erc20-bridge withdraw[w] -- --amount[a] --ca [default:erc20]
+npm run bridge erc20-bridge getProof -- --withdrawL2Hash[l2hash] --ca [default:erc20]
+npm run bridge erc20-bridge claimWithdraw -- --withdrawL2Hash[l2hash] --ca [default:erc20]
 ```
 
 ## Rollup CLI
 ### Config
 ```bash
 npm run rollup rollup getlatestConfirmedNodeNum
+npm run rollup rollup getNode -- --number[num]
 ```
 
 ## Utils CLI
@@ -72,8 +73,8 @@ npm run utils native transfer -- --to --amount[--a] --layer [l1 | l2 | l3][defau
 ### ERC20
 ```bash
 npm run utils erc20 getBalance -- --addr[default] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
-npm run utils erc20 approve -- --spender --amount[--a] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
-npm run utils erc20 transfer  -- --to --amount[--a] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
+npm run utils erc20 approve -- --spender --amount[a] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
+npm run utils erc20 transfer  -- --to --amount[a] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
 ```
 > If `--addr` is omitted, default wallet address in *.env.SIGNER_PK_KEY*<br/>
 > If `--layer` is omitted, default "l1"<br/>
