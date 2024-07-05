@@ -172,6 +172,7 @@ const depositERC20 = async (
   }
   const depositAmountToL2 = parseEther(amount);
   const { inbox } = await readRollupCA(provider);
+
   const ERC20Inbox = new ERC20Inbox_factory(provider, signer, inbox);
   const receipt = await ERC20Inbox.depositERC20(depositAmountToL2);
   console.log(receipt);
@@ -235,30 +236,34 @@ const getProof = async (
   // (1) get Latest Confirm Node(=RBlock)
   const latestConfirmedNodeNum = await Rollup.latestConfirmed();
 
+  
   // (2) get Latest Confirm Node Created At Block L1
-  const { createdAtBlock } = await Rollup.getNode(latestConfirmedNodeNum!);
+  const createdAtBlock = await Rollup.getNodeCreationBlockForLogLookup(latestConfirmedNodeNum!);
 
+  
   // (3) latest Confirmed Node의 마지막 L2 Blockhash
   const state = await Rollup.getLatestConfirmedNodeState(
     latestConfirmedNodeNum,
     createdAtBlock
   );
+
   if (!state) throw new Error("error from getLatestConfirmedNodeState");
   const { blockHash } = state;
-
+  
   //(4) -> providerL2.getBlock(blockHash)
   const l2Block = (await arb_getBlockByHash(providerL2.connection.url, [
     blockHash,
-    false,
+    true,
   ])) as ArbBlock;
-
+  
   // (5) get L2ToL1Tx data
   const recepit = await providerL2.getTransactionReceipt(withdrawL2Hash);
+  
   const parseLogs = decodeLogsEvent(recepit.logs, [
     ABI_NITRO_ABI_ROOT,
     ABI_BRIDGE_ABI_ROOT,
   ]);
-
+  
   const _L2ToL1Tx_Log = parseLogs!.filter((log) => log.name === "L2ToL1Tx");
 
   const L2ToL1Tx_Log: IL2ToL1Tx = {
@@ -284,7 +289,7 @@ const getProof = async (
     root: outboxProofParams.root,
     proof: outboxProofParams.proof,
   };
-
+  
   return { proof, L2ToL1Tx_Log };
 };
 
