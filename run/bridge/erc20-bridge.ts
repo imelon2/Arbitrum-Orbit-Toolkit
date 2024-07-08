@@ -198,13 +198,13 @@ const deposit = async (
   /** Verify address & will return Error */
   to = getAddress(to);
   const depositAmountToL2 = parseEther(amount);
-  const L1ERC20Gateway = new L1GatewayRouter_factory(
+  const L1GatewayRouter = new L1GatewayRouter_factory(
     providerL1,
     signerL1,
     l1GatewayRouter
   );
 
-  const retryTicket = await L1ERC20Gateway.getRetryTicketInnerData(
+  const retryTicket = await L1GatewayRouter.getRetryTicketInnerData(
     l1TokenAddress,
     to,
     isFeeToken
@@ -217,22 +217,23 @@ const deposit = async (
     l1basefee
   );
 
+  
   /** maxSubmissionFee + (maxSubmissionFee * 300%) */
   maxSubmissionFee = percentIncrease(
     maxSubmissionFee,
     DEFAULT_SUBMISSION_FEE_PERCENT_INCREASE
   );
-
+  
   /* max_fee_per_gas * (max_fee_per_gas + 500%) */
   let max_fee_per_gas = await providerL2.getGasPrice();
   max_fee_per_gas = percentIncrease(
     max_fee_per_gas,
     DEFAULT_GAS_PRICE_PERCENT_INCREASE
   );
-
+  
   const NodeInterface = new NodeInterface_factory(providerL2, signerL2);
   const gasLimit = await NodeInterface.estimateRetryableTicket(retryTicket!);
-
+  
   /** if Orbit use FeeToken, L2Fee insert `OutboundTransfer` data */
   const data = isFeeToken
     ? getOutboundTransferData({
@@ -245,7 +246,7 @@ const deposit = async (
   /** if Orbit use FeeToken, require(msg.value == 0, "NO_VALUE");
    * https://github.com/OffchainLabs/token-bridge-contracts/blob/92c3caba883c057c41461162d1795723b1c35986/contracts/tokenbridge/ethereum/gateway/L1OrbitERC20Gateway.sol#L29
    */
-  const receipt = await L1ERC20Gateway.outboundTransfer(
+  const receipt = await L1GatewayRouter.outboundTransfer(
     l1TokenAddress,
     to,
     depositAmountToL2,
@@ -277,13 +278,13 @@ const withdraw = async (
 
   const withdrawAmountToL1 = parseEther(amount);
 
-  const L2ERC20Gateway = new L2GatewayRouter_factory(
+  const L2GatewayRouter = new L2GatewayRouter_factory(
     providerL2,
     signerL2,
     l2GatewayRouter
   );
 
-  const receipt = await L2ERC20Gateway.outboundTransfer(
+  const receipt = await L2GatewayRouter.outboundTransfer(
     l1TokenAddress,
     to,
     withdrawAmountToL1,

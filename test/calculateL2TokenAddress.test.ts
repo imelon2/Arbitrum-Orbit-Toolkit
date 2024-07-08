@@ -9,7 +9,7 @@ async function main() {
     const {provider:providerL2,wallet:signerL2} = init("L2")
     const { l2GatewayRouter } = await readRollupCA(providerL2);
 
-    const l1ERC20 = "0x211028B4A438a4fC8239D51955C6d531a3ffcE91"
+    const l1ERC20 = "0xb4Fb22F9f302dAA613a36b5Caf908733BA263AB8"
     const L2ERC20Gateway = new L2GatewayRouter_factory(
         providerL2,
         signerL2,

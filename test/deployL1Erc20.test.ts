@@ -14,7 +14,7 @@ async function main() {
 
     const supply = BigNumber.from(5000000000).mul(BigNumber.from(10).pow(18));
 
-    const l1DappToken = await L1DappToken.deploy("dKargo","DKA",supply,{gasLimit:3000000})
+    const l1DappToken = await L1DappToken.deploy("WonHyeok","CHOI",supply,{gasLimit:3000000})
     const recepit = await l1DappToken.deployed()
 
     console.log(recepit);

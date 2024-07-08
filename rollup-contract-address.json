@@ -75,7 +75,7 @@
     "l1GatewayRouter": "0x0BC1CDEf8a02A24180813e380beC1846858Fa737",
     "feeToken": "0x9B7C0fcc305ca36412F87Fd6Bd08c194909A7d4E",
     "erc20": "",
-    "erc20-2": "0x211028B4A438a4fC8239D51955C6d531a3ffcE91"
+    "erc20-2": "0xb4Fb22F9f302dAA613a36b5Caf908733BA263AB8"
 
   },
   "__comment_Dev3_": "########### Dev Layer3 ###########",
@@ -85,6 +85,6 @@
     "l2ERC20Gateway": "0xd65a6D84844314A1ec81389daa3A126d49ABDDbD",
     "l2GatewayRouter": "0x5C8aa2a1e86a284BE26C9CFA5daf57E5bc7208EA",
     "erc20": "",
-    "erc20-2": "0x53Dc212F72A2863853DE84F757827809854aE759"
+    "erc20-2": "0x77f239D8e8cDfB281B4793c15E469b9a018b1a8a"
   }
 }

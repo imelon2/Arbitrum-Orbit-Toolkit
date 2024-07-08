@@ -1,4 +1,11 @@
-import { BigNumber, BigNumberish, Overrides, Wallet, ethers } from "ethers";
+import {
+  BigNumber,
+  BigNumberish,
+  Overrides,
+  Wallet,
+  ethers,
+  utils,
+} from "ethers";
 import { JsonRpcProvider, address } from "../../type";
 import { BaseContract } from "../base.f";
 import {
@@ -53,18 +60,48 @@ export class NodeInterface_factory extends BaseContract {
     }
   }
 
-  /**
-   * @kind view
-   */
-  async estimateRetryableTicket(retryableTicket: IRetryableTicket) {
+  async gasEstimateL1Component(destinationAddress: address, calldata: string) {
     try {
       if (!this.contract) {
         throw new Error(`No import ${this.contractName} contract`);
       }
-      
+
+      const { gasEstimateForL1, baseFee, l1BaseFeeEstimate } =
+        await this.contract.callStatic.gasEstimateL1Component(
+          destinationAddress, // to
+          false, // is creationTransaction??
+          calldata,
+          {
+            blockTag: "latest",
+          }
+        );
+      return {
+        gasEstimateForL1,
+        baseFee,
+        l1BaseFeeEstimate,
+      };
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  /**
+   * @kind view
+   */
+  async estimateRetryableTicket(
+    retryableTicket: IRetryableTicket,
+    senderDeposit: BigNumber = utils // for calculate L2 Address Gas Fee
+      .parseEther("100")
+      .add(retryableTicket.l2CallValue)
+  ) {
+    try {
+      if (!this.contract) {
+        throw new Error(`No import ${this.contractName} contract`);
+      }
+
       return await this.contract.estimateGas.estimateRetryableTicket(
         retryableTicket.from,
-        retryableTicket.amount,
+        senderDeposit,
         retryableTicket.to,
         retryableTicket.l2CallValue,
         retryableTicket.excessFeeRefundAddress,
