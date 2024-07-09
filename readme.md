@@ -54,12 +54,16 @@ npm run bridge erc20-bridge getProof -- --withdrawL2Hash[l2hash] --ca [default:e
 npm run bridge erc20-bridge claimWithdraw -- --withdrawL2Hash[l2hash] --ca [default:erc20]
 ```
 
-## Rollup CLI
+## Network Config CLI
 ### Config
 ```bash
 npm run config rollup getlatestConfirmedNodeNum --layer [l1 | l2][default:l1]
 npm run config rollup getNode -- --number[num] --layer [l1 | l2][default:l1]
 npm run config rollup getSystemContracts -- --layer [l1 | l2][default:l1]
+npm run config bridge getSystemContracts -- --layer [l1 | l2][default:l1]
+npm run config inbox getSystemContracts -- --layer [l1 | l2][default:l1]
+npm run config outbox getSystemContracts -- --layer [l1 | l2][default:l1]
+npm run config sequencerInbox getSystemContracts -- --layer [l1 | l2][default:l1]
 ```
 
 ## Utils CLI
@@ -76,6 +80,7 @@ npm run utils native transfer -- --to --amount[--a] --layer [l1 | l2 | l3][defau
 npm run utils erc20 getBalance -- --addr[default] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
 npm run utils erc20 approve -- --spender --amount[a] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
 npm run utils erc20 transfer  -- --to --amount[a] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
+npm run utils erc20 metadata -- --addr[default] --ca [default:erc20] --layer [l1 | l2 | l3][default:l1]
 ```
 > If `--addr` is omitted, default wallet address in *.env.SIGNER_PK_KEY*<br/>
 > If `--layer` is omitted, default "l1"<br/>

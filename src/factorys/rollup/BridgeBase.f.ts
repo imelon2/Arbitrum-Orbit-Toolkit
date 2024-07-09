@@ -3,17 +3,18 @@ import { BaseContract } from "../base.f";
 import {
   abi,
   bytecode,
-} from "@arbitrum/nitro-contracts/build/contracts/src/bridge/SequencerInbox.sol/SequencerInbox.json";
+} from "@arbitrum/nitro-contracts/build/contracts/src/bridge/IBridge.sol/IBridge.json";
 
-export class SequencerInbox_factory extends BaseContract {
+export class BridgeBase_factory extends BaseContract {
   constructor(
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,
     address?: string,
-    contractName: string = "SequencerInbox_factory",
-    _abi: any = abi // If need integrated ABI
+    contractName: string = "BridgeBase",
+    _abi: any = abi,
+    _bytecode: any = bytecode,
   ) {
-    super(provider, signer, _abi, bytecode, contractName, address);
+    super(provider, signer, _abi, _bytecode, contractName, address);
   }
 
   async rollup() {
@@ -26,11 +27,11 @@ export class SequencerInbox_factory extends BaseContract {
     }
   }
 
-  async bridge() {
+  async sequencerInbox() {
     try {
       if (!this.contract)
         throw new Error(`no import ${this.contractName} contract`);
-      return await this.contract.bridge();
+      return await this.contract.sequencerInbox();
     } catch (error) {
       console.error(error);
     }

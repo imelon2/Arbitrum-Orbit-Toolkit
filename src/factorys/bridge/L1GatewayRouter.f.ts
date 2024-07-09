@@ -110,4 +110,24 @@ export class L1GatewayRouter_factory extends BaseContract {
       console.log(error);
     }
   }
+
+  async inbox() {
+    try {
+      if (!this.contract)
+        throw new Error(`no import ${this.contractName} contract`);
+      return await this.contract.inbox();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async defaultGateway() {
+    try {
+      if (!this.contract)
+        throw new Error(`no import ${this.contractName} contract`);
+      return await this.contract.defaultGateway();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

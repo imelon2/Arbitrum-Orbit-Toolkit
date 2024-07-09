@@ -9,7 +9,7 @@ import { BaseContract } from "../base.f";
 import {
   abi,
   bytecode,
-} from "@arbitrum/nitro-contracts/build/contracts/src/bridge/Outbox.sol/Outbox.json";
+} from "@arbitrum/nitro-contracts/build/contracts/src/bridge/IOutbox.sol/IOutbox.json";
 import { IL2ToL1Tx } from "../../type/contractType";
 import { LogFinishTime } from "../_decorators/common";
 
@@ -52,6 +52,26 @@ export class Outbox_factory extends BaseContract {
         `${this.contractName}.executeTransaction transaction by hash ${response.hash}`
       );
       return await response.wait();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async rollup() {
+    try {
+      if (!this.contract)
+        throw new Error(`no import ${this.contractName} contract`);
+      return await this.contract.rollup();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async bridge() {
+    try {
+      if (!this.contract)
+        throw new Error(`no import ${this.contractName} contract`);
+      return await this.contract.bridge();
     } catch (error) {
       console.error(error);
     }
