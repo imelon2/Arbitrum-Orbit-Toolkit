@@ -38,4 +38,24 @@ export class InboxBase extends BaseContract {
       console.error(error);
     }
   }
+
+  async bridge() {
+    try {
+      if (!this.contract)
+        throw new Error(`no import ${this.contractName} contract`);
+      return await this.contract.bridge();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async sequencerInbox() {
+    try {
+      if (!this.contract)
+        throw new Error(`no import ${this.contractName} contract`);
+      return await this.contract.sequencerInbox();
+    } catch (error) {
+      console.error(error);
+    }
+  }
 }

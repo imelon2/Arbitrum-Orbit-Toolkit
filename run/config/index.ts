@@ -2,18 +2,13 @@ import { hideBin } from "yargs/helpers";
 import Yargs from "yargs/yargs";
 import dotenv from "dotenv";
 import { L1TokenBridgeCreatorCommand } from "./l1TokenBridgeCreator";
-import { RollupCommand } from "./config";
 import { layer } from "../common";
+import { RollupCommand } from "./\brollup";
 
 dotenv.config();
 
 async function main() {
   await Yargs(hideBin(process.argv))
-    .options({
-      layer,
-      l1url: { default: process.env.L1_URL },
-      l2url: { default: process.env.L2_URL },
-    })
     .command(
       "rollup",
       "Get network config data",

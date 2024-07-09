@@ -9,7 +9,7 @@
     "debug": "ts-node run/debug/index.ts",
     "monitor": "ts-node run/monitor/index.ts",
     "bridge": "ts-node run/bridge/index.ts",
-    "rollup": "ts-node run/rollup/index.ts"
+    "config": "ts-node run/config/index.ts"
   },
   "author": "",
   "license": "ISC",

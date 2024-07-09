@@ -1,12 +1,12 @@
-import { BigNumber, Overrides, Wallet, ethers } from "ethers";
-import { BaseContract } from "../base.f";
+import { BigNumber, Wallet, ethers } from "ethers";
 import {
   abi,
   bytecode,
 } from "@arbitrum/nitro-contracts/build/contracts/src/rollup/RollupUserLogic.sol/RollupUserLogic.json";
 import { Arb_ABI } from "../../modules/abiReader";
+import { RollupCore_factory } from "./RollupCore.f";
 
-export class RollupUserLogic_factory extends BaseContract {
+export class RollupUserLogic_factory extends RollupCore_factory {
   constructor(
     provider: ethers.providers.JsonRpcProvider,
     signer: Wallet,
@@ -14,7 +14,7 @@ export class RollupUserLogic_factory extends BaseContract {
     contractName: string = "RollupUserLogic",
     _abi: any = abi // If need integrated ABI
   ) {
-    super(provider, signer, _abi, bytecode, contractName, address);
+    super(provider, signer, address, contractName, _abi, bytecode);
   }
 
   /**

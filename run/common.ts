@@ -28,3 +28,4 @@ export const verifyContractAddress = async (
   }
 };
 export const layer = { choices: ["l1", "l2", "l3"], default: "l1" };
+export const rollupLayer = { choices: ["l1", "l2"], default: "l1" };

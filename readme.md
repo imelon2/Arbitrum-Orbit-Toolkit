@@ -57,15 +57,16 @@ npm run bridge erc20-bridge claimWithdraw -- --withdrawL2Hash[l2hash] --ca [defa
 ## Rollup CLI
 ### Config
 ```bash
-npm run rollup rollup getlatestConfirmedNodeNum
-npm run rollup rollup getNode -- --number[num]
+npm run config rollup getlatestConfirmedNodeNum --layer [l1 | l2][default:l1]
+npm run config rollup getNode -- --number[num] --layer [l1 | l2][default:l1]
+npm run config rollup getSystemContracts -- --layer [l1 | l2][default:l1]
 ```
 
 ## Utils CLI
 ### Native
 ```bash
-npm run utils native getBalance -- --addr[default] --layer [l1 | l2 | l3][default]
-npm run utils native transfer -- --to --amount[--a] --layer [l1 | l2 | l3][default]
+npm run utils native getBalance -- --addr[default] --layer [l1 | l2 | l3][default:l1]
+npm run utils native transfer -- --to --amount[--a] --layer [l1 | l2 | l3][default:l1]
 ```
 > If `--addr` is omitted, default wallet address in *.env.SIGNER_PK_KEY*<br/>
 > If `--layer` is omitted, default "l1"
