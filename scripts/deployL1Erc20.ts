@@ -5,7 +5,7 @@ import { BigNumber, ethers } from "ethers";
  * ts-node test/deployL1Erc20.test.ts 
  */
 async function main() {
-    const { provider:l1Provider, wallet:l1Wallet } = init("L1");
+    const { provider:l1Provider, wallet:l1Wallet } = init("L2");
     
 
     console.log('Deploying the test DappToken to L1:')
